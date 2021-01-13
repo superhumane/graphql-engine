@@ -25,29 +25,7 @@ services:
     depends_on:
       - 'postgres'
 
-    # command: >
-    #   bash -lc 'echo $$PATH'
-
-    # command: >
-    #   sh -c
-    #   "cd console
-    #    npm ci
-    #    npm run server-build
-    #    cd ../server
-    #    ln -s cabal.project.dev cabal.project.local
-    #    cabal new-update
-    #    cabal new-build
-    #    ln -s cabal.project.dev-sh.local cabal.project.local"
-
     environment:
-      # POSTGRES_DB: hasura
-      # POSTGRES_USER: hasura
-      # POSTGRES_PASSWORD: a54637f81da
-      # HASURA_GRAPHQL_DATABASE_URL: postgres://hasura:a54637f81da@postgres:5432/hasura
-      ## enable the console served by server
       HASURA_GRAPHQL_ENABLE_CONSOLE: 'true' # set to "false" to disable console
-      ## enable debugging mode. It is recommended to disable this in production
       HASURA_GRAPHQL_DEV_MODE: 'true'
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
-      ## uncomment next line to set an admin secret
-      # HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey

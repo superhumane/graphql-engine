@@ -11,7 +11,7 @@ bash:
 stop:
 	docker-compose stop
 
-# DESTROY postgres DB
+# DESTROY postgres DB and delete build files
 destroy:
 	docker-compose stop
 	sudo rm -rf db/postres
@@ -22,17 +22,16 @@ destroy:
 db_connect:
 	docker exec -it hasura-db psql postgres://hasura:hasura@postgres:5432/postgres
 
-# compile:
-# 	cd console
-# 	npm ci
-# 	npm run server-build
-# 	cd ../server
-# 	ln -s cabal.project.dev cabal.project.local
-# 	cabal new-update
-# 	cabal new-build
+# hasura container needs to be running before executing
+compile:
+	docker exec -it graphql-engine sh -c "cd console && npm ci && npm run server-build && cd ../server && rm -f cabal.project.local && ln -s cabal.project.dev cabal.project.local && cabal new-update && cabal new-build"
 
-.PHONY: up stop destroy	db_connect
+build:
+	docker exec -it graphql-engine sh -c "cd server && cabal new-build"
 
-# cabal new-run -- exe:graphql-engine \
-#   --database-url='postgres://hasura:hasura@postgres:5432/postgres' \
-#   serve --enable-console --console-assets-dir=../console/static/dist
+run:
+	docker exec -it graphql-engine sh -c "cd server && cabal new-run -- exe:graphql-engine \
+		--database-url='postgres://hasura:hasura@postgres:5432/postgres' \
+		serve --enable-console --console-assets-dir=../console/static/dist"
+
+.PHONY: up stop destroy	db_connect compile build run
