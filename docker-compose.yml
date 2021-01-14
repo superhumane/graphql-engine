@@ -1,7 +1,7 @@
 version: '3'
 services:
   postgres:
-    image: postgres:12
+    image: postgres:13
     container_name: hasura-db
     ports:
       - '5432:5432'
@@ -21,6 +21,7 @@ services:
     tty: true
     volumes:
       - ./:/usr/src
+      - ./build:/build
     working_dir: /usr/src
     depends_on:
       - 'postgres'
